@@ -1,7 +1,7 @@
 const express = require("express");
 
-const controller = require("../src/controllers/carsController");
-const authMiddleware = require("../src/middlewares/authMiddleware");
+const controller = require("../controllers/carsController");
+const authMiddleware = require("../middlewares/authMiddleware");
 const router = express.Router();
 
 router.get("/", controller.getCars);
