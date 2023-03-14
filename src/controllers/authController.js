@@ -29,7 +29,7 @@ const registerUser = async (req, res, next) =>
 }
 
 const loginUser = async (req, res) => {
-
+    // implementing login
 }
 
 module.exports = { registerUser, loginUser };
