@@ -1,35 +1,31 @@
+authService = require("../services/authService");
 
-var userService =  require('../services/authService');
-
-const registerUser = async (req, res, next) =>
-{
+class AuthController {
+  async registerUser(req, res, next) {
     const { firstname, lastname, email, phonenumber, password } = req.body;
-    try
-    {
-        console.log(req.body);
-        var status = await userService.registerUserService({
-            firstname,
-            lastname,
-            email,
-            phonenumber,
-            password });
-        console.log(status);
+    try {
+      console.log(req.body);
+      var status = await authService.registerUserService({
+        firstname,
+        lastname,
+        email,
+        phonenumber,
+        password,
+      });
+      console.log(status);
 
-        if (status) {
-            res.send({ "message": "User created successfully" });
-        } else {
-            res.send({ "message": "Error creating user" });
-        }
+      if (status) {
+        res.send({ message: "User created successfully" });
+      } else {
+        res.send({ message: "Error creating user" });
+      }
+    } catch (err) {
+      next(err);
+      console.log(err);
     }
-    catch(err)
-    {
-        next(err);
-        console.log(err);
-    }
+  }
+
+  async loginUser(req, res) {}
 }
 
-const loginUser = async (req, res) => {
-
-}
-
-module.exports = { registerUser, loginUser };
+module.exports = new AuthController();

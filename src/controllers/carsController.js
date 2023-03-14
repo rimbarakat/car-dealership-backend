@@ -1,5 +1,10 @@
-const deleteCar = (req, res, next) => {
-    // logic to delete a car
-};
+class CarsController {
+  deleteCar(req, res, next) {}
+  getCar(req, res, next) {}
+  getCars(req, res, next) {}
+  updateCar(req, res, next) {}
+  getCarBookings(req, res, next) {}
+  addCar(req, res, next) {}
+}
 
-module.exports = { deleteCar };
+module.exports = new CarsController();
