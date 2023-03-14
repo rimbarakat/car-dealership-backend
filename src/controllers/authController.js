@@ -5,7 +5,7 @@ class AuthController {
     const { firstname, lastname, email, phonenumber, password } = req.body;
     try {
       console.log(req.body);
-      var status = await authService.registerUserService({
+      const status = await authService.registerUserService({
         firstname,
         lastname,
         email,
