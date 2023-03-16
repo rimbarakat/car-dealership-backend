@@ -3,6 +3,7 @@ const validateEnv = require("./utils/validateEnv");
 validateEnv();
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require('cors');
 const app = express();
 const authRoutes = require("./routes/authRoutes");
 const carsRoutes = require("./routes/carsRoutes");
@@ -22,6 +23,7 @@ async function connect() {
 connect();
 
 app.use(express.json());
+app.use(cors());
 app.use("/auth", authRoutes);
 app.use("/cars", carsRoutes);
 app.use("/bookings", bookingRoutes);
