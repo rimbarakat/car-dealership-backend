@@ -1,8 +1,26 @@
+const jwt = require("jsonwebtoken");  
+
 const authMiddleware = (req, res, next) => {
-  const token = req.headers["Authorization"];
-  if (!isValid(token)) {
-    return res.status(401).send({});
+  const authHeader = req.headers.token;
+  if (authHeader) {
+    const token = authHeader.split(" ")[1];
+    jwt.verify(token, process.env.JWT_SEC, (err, user) => {
+      if (err) res.status(403).json("Token not valid!");
+      req.user = user;
+      next();
+    });
+  } else {
+    return res.status(401).json("You are not authenticated!");
   }
-  next();
+
+  verifyToken(req,res,()=>{
+    if(req.user.id === req.params.id || req.user.isAdmin){
+        next();
+    }else{
+        res.status(403).json("You are not allowed to do that");
+    }
+  });
+
 };
+
 module.exports = authMiddleware;

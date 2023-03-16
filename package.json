@@ -5,18 +5,21 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    
+    "start": "nodemon index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
+    "crypto-js": "^4.1.1",
     "dotenv": "^16.0.3",
     "envalid": "^7.3.1",
     "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
     "mongodb": "^5.1.0",
-    "mongoose": "^7.0.1",
+    "mongoose": "^7.0.2",
     "simple-encryptor": "^4.0.0"
   },
   "devDependencies": {

@@ -14,7 +14,7 @@ const uri = process.env.MONGO_URI;
 async function connect() {
   try {
     await mongoose.connect(uri);
-    console.log("Connected to MongoDB");
+    console.log("Connected to Database!");
   } catch (error) {
     console.error(error);
   }
@@ -30,5 +30,5 @@ app.use("/bookings", bookingRoutes);
 
 const port = Number(process.env.PORT) || 8000;
 app.listen(port, () => {
-  console.log(`Server started on port ${port}`);
+  console.log(`Backend Server started on port ${port}`);
 });
