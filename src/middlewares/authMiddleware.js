@@ -5,17 +5,18 @@ const authMiddleware = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader) {
-      throw new HttpUnauthorizedError();
+      throw new Error();
     }
-    const token = authHeader.split(" ")[1];
+    const token = authHeader.split(" ");
     const decoded = await jwt.verifyToken(token);
     if (!decoded) {
-      throw new HttpError(401, "invalid token");
+      throw new Error()
     }
     req.user = decoded;
     next();
   } catch (e) {
-    next(e);
+    // returning all auth errors as 401
+    next(new HttpUnauthorizedError())
   }
 };
 
