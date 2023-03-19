@@ -1,48 +1,52 @@
-require("dotenv").config();
-const CryptoJS = require("crypto-js");
-const userModel = require("../models/userModel");
-const jwt = require('jsonwebtoken');
-const secretKey = process.env.JWT_SECRET_KEY;
-const passwordSecret = process.env.PASS_SEC;
-
+const User = require("../models/userModel");
+const jwt = require("../utils/jwt");
+const { hashPassword, verify } = require("../utils/hash");
+const HttpUnauthorizedError = require("../http-errors/HttpUnauthorizedError");
+const HttpError = require("../http-errors/HttpError");
 
 class AuthService {
-  registerUserService = async (userDetails) => {
-    const { firstname, lastname, email, phonenumber, password } = userDetails;
-    const userExists = await userModel.findOne({ email }, { maxTimeMS: 30000 });
+  registerUser = async (registerBody) => {
+    const { firstName, lastName, email, phoneNumber, password } = registerBody;
+    const userExists = await User.findOne({ email });
     if (userExists) {
-      throw { status: 409, message: "Email already registered" };
+      throw new HttpError(409, "Email already registered");
     }
-    const encrypted = CryptoJS.AES.encrypt(password, passwordSecret);
-    //const encrypted = encryptor.encrypt(password);
-    const newUser = new userModel({
-      firstname,
-      lastname,
+    const hashedPassword = await hashPassword(password);
+    const newUser = new User({
+      firstName,
+      lastName,
       email,
-      phonenumber,
-      password: encrypted,
+      phoneNumber,
+      userType: "client",
+      password: hashedPassword,
     });
-
-    try {
-      const savedUser = await newUser.save();
-      const token = jwt.sign({ userId: savedUser._id }, secretKey, { expiresIn: '1d' });
-      return {
-        status: 201,
-        message: "User registered successfully",
-        data: { user: savedUser, token },
-      };
-    } catch (err) {
-      throw { status: 500, message: "Internal server error" };
-    }
+    const savedUser = await newUser.save();
+    // Sending an access token here directly is wrong, because you have to verify the email first
+    // we should only send an access token after login, not register
+    // But... for now, okay.. 
+    // we will assume that the email is automatically verified and that the user is automatically signed in
+    const accessToken = await jwt.sign({
+      userId: savedUser._id,
+      userType: savedUser.userType,
+    });
+    return { user: savedUser, accessToken };
   };
 
-
-  loginUserService(userDetails) {
-    // const {email, password } = userDetails;
-    // const loginUser = new userModel({
-    //   email,
-    //   password
-    // });
+  async login(loginBody) {
+    const user = await User.findOne({ email: loginBody.email });
+    if (!user) {
+      throw new HttpUnauthorizedError();
+    }
+    const isVerified = await verify(loginBody.password, user.password);
+    if (!isVerified) {
+      throw new HttpUnauthorizedError();
+    }
+    const accessToken = jwt.sign({
+      id: user._id,
+      userType: user.userType,
+    });
+    const { password, ...u } = user.toJSON();
+    return { user: u, accessToken };
   }
 }
 
