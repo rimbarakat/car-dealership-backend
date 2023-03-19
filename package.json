@@ -5,12 +5,14 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon",
-    "start": "nodemon index.js"
+    "start": "nodemon index.js",
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
     "crypto-js": "^4.1.1",
     "dotenv": "^16.0.3",
@@ -22,6 +24,7 @@
     "simple-encryptor": "^4.0.0"
   },
   "devDependencies": {
+    "jest": "^29.5.0",
     "nodemon": "^2.0.21"
   }
 }
