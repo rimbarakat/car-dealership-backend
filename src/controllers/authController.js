@@ -8,7 +8,7 @@ class AuthController {
       res.status(201).json(response);
     } catch (e) {
       next(e);
-    }
+    }     
   }
 
   async authenticate(req, res, next) {
