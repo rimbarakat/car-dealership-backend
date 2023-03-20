@@ -7,7 +7,7 @@ const authMiddleware = async (req, res, next) => {
     if (!authHeader) {
       throw new Error();
     }
-    const token = authHeader.split(" ");
+    const token = authHeader.split(" ")[1];
     const decoded = await jwt.verifyToken(token);
     if (!decoded) {
       throw new Error()
