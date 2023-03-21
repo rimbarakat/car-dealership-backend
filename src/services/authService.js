@@ -11,6 +11,10 @@ class AuthService {
     if (userExists) {
       throw new HttpError(409, "Email already registered");
     }
+    const phoneExists = await User.findOne({ phoneNumber });
+    if (phoneExists) {
+      throw new HttpError(409, "Phone number already registered");
+    }
     const hashedPassword = await hashPassword(password);
     const newUser = new User({
       firstName,
@@ -29,14 +33,15 @@ class AuthService {
       userId: savedUser._id,
       userType: savedUser.userType,
     });
-    return { user: savedUser, accessToken };
+    const { password: removed, ...rest } = savedUser.toJSON();
+    return { user: { ...rest }, accessToken };
   };
 
   /**
    * it's important to return login_error from login so that the client knows that this 401 comes from login
-   * 
-   * @param {*} loginBody 
-   * @returns 
+   *
+   * @param {*} loginBody
+   * @returns
    */
   async login(loginBody) {
     const user = await User.findOne({ email: loginBody.email });
@@ -45,7 +50,7 @@ class AuthService {
     }
     const isVerified = await verify(loginBody.password, user.password);
     if (!isVerified) {
-      throw new HttpUnauthorizedError(null, "login_error"); 
+      throw new HttpUnauthorizedError(null, "login_error");
     }
     const accessToken = jwt.sign({
       id: user._id,
