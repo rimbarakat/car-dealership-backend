@@ -1,6 +1,6 @@
 const Car = require("../models/carModel");
 const User = require("../models/userModel");
-carServices = require("../services/carServices");
+const CarsService = require("../services/carServices");
 const userModel = require("../models/userModel");
 const carModel = require("../models/carModel");
 
@@ -12,58 +12,60 @@ const mockcar = {
 };
 
 class CarsController {
-  async getCar(req, res, next) {
+  service = new CarsService();
+  getCar = async (req, res, next) => {
     try {
       const id = req.params.id;
-      const car = await carServices.getCarbyId(id);
+      const car = await this.service.getCarbyId(id);
       res.json(car);
     } catch (err) {
       next(err);
     }
-  }
-  async getCars(req, res, next) {
+  };
+  getCars = async (req, res, next) => {
     try {
-      const cars = await carServices.getAllCars();
+      const cars = await this.service.getAllCars();
       res.status(200).json({ data: cars });
     } catch (err) {
       next(err);
     }
-  }
-  async updateCar(req, res, next) {
+  };
+  updateCar = async (req, res, next) => {
     const id = req.params.id;
     const { model, year, color, description, image } = req.body;
-    const car = await carServices.updateCar(id, {
+    const car = await this.service.updateCar(id, {
       model,
       year,
       color,
       description,
       image,
     });
-    res.status(200).json({ data: car });
-  }
-  async addCar(req, res, next) {
+    res.status(200).json(car);
+  };
+  addCar = async (req, res, next) => {
     try {
       const { model, year, color, description, image } = req.body;
-      const car = await carServices.addCar({
+      const car = await this.service.addCar({
         model,
         year,
         color,
         description,
         image,
       });
-      res.status(201).json({ data: car });
+      res.status(201).json(car);
     } catch (err) {
       next(err);
     }
-  }
-  async deleteCar(req, res, next) {
+  };
+  deleteCar = async (req, res, next) => {
     try {
       const id = req.params.id;
-      await carServices.deleteCar(id);
+      await this.service.deleteCar(id);
+      res.sendStatus(204);
     } catch (err) {
       next(err);
     }
-  }
+  };
   getCarBookings(req, res, next) {}
 }
 

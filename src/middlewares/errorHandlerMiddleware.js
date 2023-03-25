@@ -4,7 +4,7 @@ const errorHandlerMiddleware = (err, req, res, next) => {
   let status = 500;
   let message = "Internal Error";
   let code;
-  console.log(err);
+  // console.log(err);
   if (err instanceof HttpError) {
     status = err.status;
     message = err.message || message;

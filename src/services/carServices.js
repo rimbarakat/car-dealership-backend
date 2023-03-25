@@ -1,39 +1,35 @@
-const carModel = require("../models/carModel");
-const User = require("../models/userModel");
-const jwt = require("jsonwebtoken");
-const CryptoJS = require("crypto-js");
-const { json } = require("express");
+const Car = require("../models/carModel");
 const HttpError = require("../http-errors/HttpError");
+const { ObjectId } = require("mongodb");
 
 class CarService {
   getCarbyId = async (id) => {
     //retreive car info by the id from the database and return it
-    const car = await carModel
-      .findById(id, { maxTimeMS: 30000 })
-      .select("model year color description image");
+    const car = await Car.findOne({ _id: id }).select(
+      "model year color description image _id"
+    );
     if (!car) {
       throw new HttpError(404, "car not found");
     }
     return car;
   };
   getAllCars = async () => {
-    const cars = await carModel
-      .find()
-      .select("model year color description image");
+    const cars = await Car.find().select("model year color description image");
     return cars;
   };
   updateCar = async (id, newInfo) => {
     const { model, year, color, description, image } = newInfo;
-    const carExists = carModel.findByIdAndUpdate(
-      id,
+    const car = await Car.findOneAndUpdate(
+      {
+        _id: id,
+      },
       { model, year, color, description, image },
-      { new: true },
-      { maxTimeMS: 30000 }
+      { new: true }
     );
-    return carExists;
+    return car.toObject();
   };
   addCar = async (carInfo) => {
-    const newCarInfo = new carModel({
+    const newCarInfo = new Car({
       model: carInfo.model,
       year: carInfo.year,
       color: carInfo.color,
@@ -41,16 +37,18 @@ class CarService {
       image: carInfo.image,
     });
     const newCar = await newCarInfo.save();
-    return newCar;
+    return newCar.toObject();
   };
   deleteCar = async (id) => {
-    const deletedCar = await carModel.findByIdAndDelete(id);
+    const deletedCar = await Car.deleteOne({
+      id: id,
+    });
     if (!deletedCar) {
-      throw new HttpError(404, "car not found");
+      throw new HttpError(404, "Car not found");
     }
     return deletedCar;
   };
   getCarBookings = async (carInfo) => {};
 }
 
-module.exports = new CarService();
+module.exports = CarService;
