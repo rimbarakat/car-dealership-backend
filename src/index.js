@@ -28,6 +28,7 @@ app.use(cors());
 app.use("/auth", authRoutes);
 app.use("/cars", carsRoutes);
 app.use("/bookings", bookingRoutes);
+
 app.use(errorHandlerMiddleware);
 const port = Number(process.env.PORT) || 8000;
 app.listen(port, () => {
