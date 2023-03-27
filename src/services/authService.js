@@ -1,7 +1,7 @@
 const User = require("../models/userModel");
 const jwt = require("../utils/jwt");
 const { hashPassword, verify } = require("../utils/hash");
-const HttpUnauthorizedError = require("../http-errors/HttpUnauthorizedError");
+const HttpUnauthorizedError = require("../http-errors/HttpErrors");
 const HttpError = require("../http-errors/HttpError");
 
 class AuthService {

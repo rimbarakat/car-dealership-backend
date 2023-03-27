@@ -1,6 +1,7 @@
 const Car = require("../models/carModel");
 const HttpError = require("../http-errors/HttpError");
 const { ObjectId } = require("mongodb");
+const { HttpNotFoundError } = require("../http-errors/HttpErrors");
 
 class CarService {
   getCarbyId = async (id) => {
@@ -9,7 +10,7 @@ class CarService {
       "model year color description image _id"
     );
     if (!car) {
-      throw new HttpError(404, "car not found");
+      throw new HttpNotFoundError("Car not found");
     }
     return car;
   };
@@ -44,7 +45,7 @@ class CarService {
       id: id,
     });
     if (!deletedCar) {
-      throw new HttpError(404, "Car not found");
+      throw new HttpNotFoundError("Car not found");
     }
     return deletedCar;
   };
