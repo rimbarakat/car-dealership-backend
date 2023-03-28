@@ -32,6 +32,12 @@ class CarService {
   addCar = async (carInfo) => {
     const newCarInfo = new Car({
       model: carInfo.model,
+      mileage: carInfo.mileage,
+      price: carInfo.price,
+      engine: carInfo.engine,
+      fuelType: carInfo.fuelType,
+      gearBox: carInfo.gearBox,
+      drive: carInfo.drive,
       year: carInfo.year,
       color: carInfo.color,
       description: carInfo.description,

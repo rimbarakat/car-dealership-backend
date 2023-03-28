@@ -32,9 +32,15 @@ class CarsController {
   };
   updateCar = async (req, res, next) => {
     const id = req.params.id;
-    const { model, year, color, description, image } = req.body;
+    const { model, mileage, price, engine, fuelType, gearBox, drive, year, color, description, image } = req.body;
     const car = await this.service.updateCar(id, {
       model,
+      mileage,
+      price,
+      engine,
+      fuelType,
+      gearBox,
+      drive,
       year,
       color,
       description,
@@ -44,9 +50,15 @@ class CarsController {
   };
   addCar = async (req, res, next) => {
     try {
-      const { model, year, color, description, image } = req.body;
+      const { model, mileage, price, engine, fuelType, gearBox, drive, year, color, description, image } = req.body;
       const car = await this.service.addCar({
         model,
+        mileage,
+        price,
+        engine,
+        fuelType,
+        gearBox,
+        drive,
         year,
         color,
         description,
