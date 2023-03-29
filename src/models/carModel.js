@@ -19,7 +19,7 @@ const CarSchema = new mongoose.Schema({
     description: { type: String, required: true },
     image: { type: String, required: true },
     isAvailable: { type: Boolean, required: true, default:true},
-    isSold: { type: Boolean, required: true, default:false}
+    isSold: { type: Boolean, required: true, default:false},
     availability: {
       type: [{
         slots: [{
