@@ -20,8 +20,41 @@ const CarSchema = new mongoose.Schema({
     image: { type: String, required: true },
     isAvailable: { type: Boolean, required: true, default:true},
     isSold: { type: Boolean, required: true, default:false}
-  },
-  { timestamps: true }
-);
-
+    availability: {
+      type: [{
+        slots: [{
+          time: { type: String },
+          available: { type: Boolean, default: true }
+        }]
+      }],
+      default: generateAvailabilityArray(30)
+    }
+  }, { timestamps: true });
+  
+  function generateAvailabilityArray(numDays) {
+    const availabilityArray = [];
+  
+    for (let i = 0; i < numDays; i++) {
+      const currentDate = new Date();
+      currentDate.setDate(currentDate.getDate() + i);
+  
+      const dateStr = currentDate.toISOString().slice(0, 10);
+      const slots = generateSlotsArray();
+  
+      availabilityArray.push({ date: dateStr, slots: slots });
+    }
+  
+    return availabilityArray;
+  }
+  
+  function generateSlotsArray() {
+    const slots = [];
+  
+    for (let i = 9; i < 18; i++) {
+      const timeSlot = `${i}-${i+1}`;
+      slots.push({ time: timeSlot, available: true });
+    }
+  
+    return slots;
+  }
 module.exports = mongoose.model("Car", CarSchema);
