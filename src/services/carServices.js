@@ -7,7 +7,7 @@ class CarService {
   getCarbyId = async (id) => {
     //retreive car info by the id from the database and return it
     const car = await Car.findOne({ _id: id }).select(
-      "model year color description image _id"
+      "model mileage price price_int engine engineShort fuelType fuelTypeShort gearBox gearBoxShort drive driveShort year color description image isAvailable isSold _id"
     );
     if (!car) {
       throw new HttpNotFoundError("Car not found");
@@ -15,16 +15,16 @@ class CarService {
     return car;
   };
   getAllCars = async () => {
-    const cars = await Car.find().select("model year color description image");
+    const cars = await Car.find().select("model mileage price price_int engine engineShort fuelType fuelTypeShort gearBox gearBoxShort drive driveShort year color description image isAvailable isSold");
     return cars;
   };
   updateCar = async (id, newInfo) => {
-    const { model, year, color, description, image } = newInfo;
+    const { model, mileage, price, price_int, engine, engineShort, fuelType, fuelTypeShort, gearBox, gearBoxShort, drive, driveShort, year, color, description, image, isAvailable, isSold } = newInfo;
     const car = await Car.findOneAndUpdate(
       {
         _id: id,
       },
-      { model, year, color, description, image },
+      { model, mileage, price, price_int, engine, engineShort, fuelType, fuelTypeShort, gearBox, gearBoxShort, drive, driveShort, year, color, description, image, isAvailable, isSold },
       { new: true }
     );
     return car.toObject();
@@ -34,14 +34,21 @@ class CarService {
       model: carInfo.model,
       mileage: carInfo.mileage,
       price: carInfo.price,
+      price_int: carInfo.price_int,
       engine: carInfo.engine,
+      engineShort: carInfo.engineShort,
       fuelType: carInfo.fuelType,
+      fuelTypeShort: carInfo.fuelTypeShort,
       gearBox: carInfo.gearBox,
+      gearBoxShort: carInfo.gearBoxShort,
       drive: carInfo.drive,
+      driveShort: carInfo.driveShort,
       year: carInfo.year,
       color: carInfo.color,
       description: carInfo.description,
       image: carInfo.image,
+      isAvailable: carInfo.isAvailable, 
+      isSold: carInfo.isSold,
     });
     const newCar = await newCarInfo.save();
     return newCar.toObject();

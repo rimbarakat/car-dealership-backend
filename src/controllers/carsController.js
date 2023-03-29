@@ -32,37 +32,51 @@ class CarsController {
   };
   updateCar = async (req, res, next) => {
     const id = req.params.id;
-    const { model, mileage, price, engine, fuelType, gearBox, drive, year, color, description, image } = req.body;
+    const { model, mileage, price, price_int, engine, engineShort, fuelType, fuelTypeShort, gearBox, gearBoxShort, drive, driveShort, year, color, description, image, isAvailable, isSold } = req.body;
     const car = await this.service.updateCar(id, {
       model,
       mileage,
       price,
+      price_int,
       engine,
+      engineShort,
       fuelType,
+      fuelTypeShort,
       gearBox,
+      gearBoxShort,
       drive,
+      driveShort,
       year,
       color,
       description,
       image,
+      isAvailable,
+      isSold,
     });
     res.status(200).json(car);
   };
   addCar = async (req, res, next) => {
     try {
-      const { model, mileage, price, engine, fuelType, gearBox, drive, year, color, description, image } = req.body;
+      const { model, mileage, price, price_int, engine, engineShort, fuelType, fuelTypeShort, gearBox, gearBoxShort, drive, driveShort, year, color, description, image, isAvailable, isSold, } = req.body;
       const car = await this.service.addCar({
         model,
         mileage,
         price,
+        price_int,
         engine,
+        engineShort,
         fuelType,
+        fuelTypeShort,
         gearBox,
+        gearBoxShort,
         drive,
+        driveShort,
         year,
         color,
         description,
         image,
+        isAvailable,
+        isSold,
       });
       res.status(201).json(car);
     } catch (err) {
