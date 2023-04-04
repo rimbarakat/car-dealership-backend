@@ -55,7 +55,7 @@ class CarService {
   };
   deleteCar = async (id) => {
     const deletedCar = await Car.deleteOne({
-      id: id,
+      _id: id,
     });
     if (!deletedCar) {
       throw new HttpNotFoundError("Car not found");

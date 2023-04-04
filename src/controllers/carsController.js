@@ -93,6 +93,9 @@ class CarsController {
     }
   };
   getCarBookings(req, res, next) {}
+  //Get all bookings for one car
+  // ..../bookings
+  //TODO 
 }
 
 module.exports = new CarsController();
