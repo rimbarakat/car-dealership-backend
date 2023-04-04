@@ -47,6 +47,7 @@ class BookingsController {
       next(err);
     }
   };
+
 }
 
 
