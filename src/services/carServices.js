@@ -65,8 +65,14 @@ class CarService {
     return deletedCar;
   };
   getCarBookings = async (carId) => {
+    const temp = new Date();
     const bookings = await Booking.find({car: carId}).select("_id car user bookedTimeSlot bookedDateSlot notes timestamps");
-    return bookings;
+    const test = await Car.find({ _id: carId });
+    for (let i = 0; i < test[0].availability.length; i++) {
+      //to get one date you put the index of the date you want in the availability to get all dates you keep it as is.
+      console.log(test[0].availability[i].toObject().date);
+
+    }
   };
   
 }
