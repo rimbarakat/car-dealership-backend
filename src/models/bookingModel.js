@@ -13,13 +13,15 @@ const BookingSchema = new Schema(
             ref:"User", 
             required: true
         },
-        bookedTimeSlot:[{
-            from:{type:String, required: true}, 
-            to:{type:String, required: true}
-        }],
-        bookedDateSlot:[{
-            date:{type:String, required: true}
-        }],
+        // bookedTimeSlot:[{
+        //     from:{type:String, required: true}, 
+        //     to:{type:String, required: true}
+        // }],
+        bookedTimeSlot: {type:String, required: true},
+        bookedDateSlot: {type:String, required: true},
+        // bookedDateSlot:[{
+        //     date:{type:String, required: true}
+        // }],
         notes:{
             type:String
         },

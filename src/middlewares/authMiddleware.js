@@ -1,5 +1,7 @@
 const HttpError = require("../http-errors/HttpError");
-const HttpUnauthorizedError = require("../http-errors/HttpErrors");
+// const HttpUnauthorizedError = require("../http-errors/HttpErrors");
+const { HttpUnauthorizedError } = require("../http-errors/HttpErrors");
+
 const jwt = require("../utils/jwt");
 const authMiddleware = async (req, res, next) => {
   try {

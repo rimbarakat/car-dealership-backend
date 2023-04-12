@@ -1,7 +1,9 @@
 const Booking = require("../models/bookingModel");
+const Car = require("../models/carModel");
 const HttpError = require("../http-errors/HttpError");
 const { ObjectId } = require("mongodb");
 const { HttpNotFoundError } = require("../http-errors/HttpErrors");
+const { HttpConflictError } = require("../http-errors/HttpErrors");
 
 class BookingsService {
   getBookingById = async (id) => {
@@ -19,11 +21,11 @@ class BookingsService {
   
   addBooking = async (bookingInfo) => {
     const newBookingInfo = new Booking({
-        car: bookingInfo.car,
-        user: bookingInfo.user,
-        bookedTimeSlot: bookingInfo.bookedTimeSlot,
-        bookedDateSlot: bookingInfo.bookedDateSlot,
-        notes: bookingInfo.notes
+      car: bookingInfo.car,
+      user: bookingInfo.user,
+      bookedTimeSlot: bookingInfo.bookedTimeSlot,
+      bookedDateSlot: bookingInfo.bookedDateSlot,
+      notes: bookingInfo.notes
     });
     const newBooking = await newBookingInfo.save();
     return newBooking.toObject();

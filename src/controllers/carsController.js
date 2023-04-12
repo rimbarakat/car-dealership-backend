@@ -1,8 +1,9 @@
-const Car = require("../models/carModel");
-const User = require("../models/userModel");
+// const Car = require("../models/carModel");
+const Bookings = require("../models/bookingModel");
+// const User = require("../models/userModel");
 const CarsService = require("../services/carServices");
-const userModel = require("../models/userModel");
-const carModel = require("../models/carModel");
+// const userModel = require("../models/userModel");
+// const carModel = require("../models/carModel");
 
 const mockcar = {
   model: "Toyota",
@@ -87,15 +88,22 @@ class CarsController {
     try {
       const id = req.params.id;
       await this.service.deleteCar(id);
+      // for loop delete all bookings with the id
       res.sendStatus(204);
     } catch (err) {
       next(err);
     }
   };
-  getCarBookings(req, res, next) {}
-  //Get all bookings for one car
-  // ..../bookings
-  //TODO 
+  getCarBookings = async (req, res, next) => {
+    try {
+      const id = req.params.id;
+      const bookings = await this.service.getCarBookings(id);
+      res.json(bookings);
+    }
+      catch (err) {
+      next(err);
+    }
+  };
 }
 
 module.exports = new CarsController();

@@ -1,4 +1,5 @@
 const Car = require("../models/carModel");
+const Booking = require("../models/bookingModel");
 const HttpError = require("../http-errors/HttpError");
 const { ObjectId } = require("mongodb");
 const { HttpNotFoundError } = require("../http-errors/HttpErrors");
@@ -60,9 +61,14 @@ class CarService {
     if (!deletedCar) {
       throw new HttpNotFoundError("Car not found");
     }
+    await Booking.deleteMany({ car: id });
     return deletedCar;
   };
-  getCarBookings = async (carInfo) => {};
+  getCarBookings = async (carId) => {
+    const bookings = await Booking.find({car: carId}).select("_id car user bookedTimeSlot bookedDateSlot notes timestamps");
+    return bookings;
+  };
+  
 }
 
 module.exports = CarService;
