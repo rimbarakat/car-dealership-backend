@@ -3,11 +3,7 @@ const Schema = mongoose.Schema;
 
 const userSchema = new Schema(
   {
-    firstName: {
-      type: String,
-      required: true,
-    },
-    lastName: {
+    fullName: {
       type: String,
       required: true,
     },
@@ -18,16 +14,9 @@ const userSchema = new Schema(
       trim: true,
       match: /^\S+@\S+\.\S+$/,
     },
-    phoneNumber: {
-      type: String,
-      required: true,
-      // match:  /^\d{7,8}$/
-      match: /^((\+|00)961)?\d{7,8}$/,
-    },
     password: {
       type: String,
       required: true,
-      minlength: 8,
     },
     userType: {
       type: String,

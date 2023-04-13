@@ -15,8 +15,14 @@ class HttpNotFoundError extends HttpError {
     super(404, message || "Not found", code);
   }
 }
+class HttpConflictError extends HttpError {
+  constructor(message, code) {
+    super(409, message || "Conflict", code);
+  }
+}
 module.exports = {
   HttpUnauthorizedError,
   HttpNotFoundError,
   HttpForbiddenError,
+  HttpConflictError,
 };

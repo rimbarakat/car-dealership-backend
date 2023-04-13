@@ -6,23 +6,17 @@ const HttpError = require("../http-errors/HttpError");
 
 class AuthService {
   registerUser = async (registerBody) => {
-    const { firstName, lastName, email, phoneNumber, password } = registerBody;
+    const { fullName, email, password } = registerBody;
     const userExists = await User.findOne({ email });
     if (userExists) {
       throw new HttpError(409, "Email already registered");
     }
-    const phoneExists = await User.findOne({ phoneNumber });
-    if (phoneExists) {
-      throw new HttpError(409, "Phone number already registered");
-    }
     const hashedPassword = await hashPassword(password);
     const newUser = new User({
-      firstName,
-      lastName,
+      fullName,
       email,
-      phoneNumber,
       userType: "client",
-      password: hashedPassword,
+      password: hashedPassword
     });
     const savedUser = await newUser.save();
     // Sending an access token here directly is wrong, because you have to verify the email first
