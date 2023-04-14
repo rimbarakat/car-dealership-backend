@@ -22,21 +22,17 @@ class CarService {
 
   getCarBookingSlots = async (id, date) => {
     let bookingSlots 
-    console.log(date);
     if (date) {
-      bookingSlots = await Car.find({ _id: id, 
+     /* bookingSlots = await Car.find({ _id: id, 
         slots: {
           $elemMatch: {
-            date: date,
-            timeSlots: {
-              $elemMatch: {
-                isAvailable: true
-              }
-            }
+            date: date
           }
         }
       },
-      {"slots.$": 1});
+      {"slots.$": 1});*/
+      bookingSlots = await Car.find({ _id: id}).select("slots");
+      bookingSlots = bookingSlots[0].slots.filter((slot) => slot.date === date);
     } 
     else {
       bookingSlots = await Car.findById(id).select("slots");
