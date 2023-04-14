@@ -10,6 +10,7 @@ router.post("/", authMiddleware, checkIsAdmin, controller.addCar);
 router.get("/:id", authMiddleware, controller.getCar);
 router.delete("/:id", authMiddleware, checkIsAdmin, controller.deleteCar);
 router.put("/:id", authMiddleware, checkIsAdmin, controller.updateCar);
-router.get("/:id/bookings", controller.getCarBookings);
+router.get("/:id/slots", controller.getCarBookingSlots); 
+//return car date arrays // then query on the date to look at all the timesslots array + availability status
 
 module.exports = router;

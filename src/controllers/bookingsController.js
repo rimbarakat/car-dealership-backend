@@ -15,21 +15,33 @@ class BookingsController {
 
   getBookings = async (req, res, next) => {
     try {
-      const bookings = await this.service.getAllBookings();
-      res.status(200).json({ data: bookings });
+      const { date } = req.query;
+      const bookings = await this.service.getAllBookings(date);
+      res.status(200).json(bookings);
     } catch (err) {
+      next(err);
+    }
+  };
+
+  getCarBookings = async (req, res, next) => {
+    try {
+      const id = req.params.id;
+      const bookings = await this.service.getCarBookings(id);
+      res.json(bookings);
+    }
+      catch (err) {
       next(err);
     }
   };
 
   addBooking = async (req, res, next) => {
     try {
-      const { user, car, bookedTimeSlot, bookedDateSlot, notes} = req.body;
+      const { user, car, date, time, notes} = req.body;
       const booking = await this.service.addBooking({
         user,
         car,
-        bookedTimeSlot,
-        bookedDateSlot,
+        date,
+        time,
         notes,
       });
       res.status(201).json(booking);

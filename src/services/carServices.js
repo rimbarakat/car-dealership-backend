@@ -19,6 +19,32 @@ class CarService {
     const cars = await Car.find().select("model mileage price price_int engine engineShort fuelType fuelTypeShort gearBox gearBoxShort drive driveShort year color description image isAvailable isSold");
     return cars;
   };
+
+  getCarBookingSlots = async (id, date) => {
+    let bookingSlots 
+    console.log(date);
+    if (date) {
+      bookingSlots = await Car.find({ _id: id, 
+        slots: {
+          $elemMatch: {
+            date: date,
+            timeSlots: {
+              $elemMatch: {
+                isAvailable: true
+              }
+            }
+          }
+        }
+      },
+      {"slots.$": 1});
+    } 
+    else {
+      bookingSlots = await Car.findById(id).select("slots");
+    }
+  
+    return bookingSlots;
+  };
+
   updateCar = async (id, newInfo) => {
     const { model, mileage, price, price_int, engine, engineShort, fuelType, fuelTypeShort, gearBox, gearBoxShort, drive, driveShort, year, color, description, image, isAvailable, isSold } = newInfo;
     const car = await Car.findOneAndUpdate(
@@ -64,16 +90,16 @@ class CarService {
     await Booking.deleteMany({ car: id });
     return deletedCar;
   };
-  getCarBookings = async (carId) => {
-    const temp = new Date();
-    const bookings = await Booking.find({car: carId}).select("_id car user bookedTimeSlot bookedDateSlot notes timestamps");
-    const test = await Car.find({ _id: carId });
-    for (let i = 0; i < test[0].availability.length; i++) {
-      //to get one date you put the index of the date you want in the availability to get all dates you keep it as is.
-      console.log(test[0].availability[i].toObject().date);
-
-    }
-  };
+  // getCarBookings = async (carId) => {
+  //   const temp = new Date();
+  //   const bookings = await Booking.find({car: carId}).select("_id car user date time notes timestamps");
+  //   // const test = await Car.find({ _id: carId });
+  //   // for (let i = 0; i < test[0].availability.length; i++) {
+  //   //   //to get one date you put the index of the date you want in the availability to get all dates you keep it as is.
+  //   //   console.log(test[0].availability[i].toObject().date);
+  //   // }
+  //   return bookings;
+  // };
   
 }
 

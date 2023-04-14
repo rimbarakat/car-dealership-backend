@@ -94,11 +94,12 @@ class CarsController {
       next(err);
     }
   };
-  getCarBookings = async (req, res, next) => {
+  getCarBookingSlots = async (req, res, next) => {
     try {
       const id = req.params.id;
-      const bookings = await this.service.getCarBookings(id);
-      res.json(bookings);
+      const { date } = req.query;
+      const allSlots = await this.service.getCarBookingSlots(id, date);
+      res.json(allSlots);
     }
       catch (err) {
       next(err);

@@ -5,6 +5,7 @@ const router = express.Router();
 
 router.get("/", controller.getBookings);
 router.get("/:id", controller.getBooking);
+router.get("/car/:id", controller.getCarBookings);
 router.post("/",controller.addBooking);
 router.delete("/:id",controller.deleteBooking);
 

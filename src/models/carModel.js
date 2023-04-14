@@ -1,5 +1,16 @@
 const mongoose = require("mongoose");
 
+const TimeSchema = new mongoose.Schema({
+  from: { type: String, required: true },
+  to: { type: String, required: true },
+  isAvailable: { type: Boolean, required: true, default: true }
+});
+
+const DateSchema = new mongoose.Schema({
+  date: { type: String, required: true },
+  timeSlots: { type: [TimeSchema], required: true, default: [] }
+});
+
 const CarSchema = new mongoose.Schema({
 
     model: { type: String, required: true },
@@ -20,41 +31,34 @@ const CarSchema = new mongoose.Schema({
     image: { type: String, required: true },
     isAvailable: { type: Boolean, required: true, default:true},
     isSold: { type: Boolean, required: true, default:false},
-    availability: {
-      type: [{
-        slots: [{
-          time: { type: String },
-          available: { type: Boolean, default: true }
-        }]
-      }],
-      default: generateAvailabilityArray(30)
-    }
+    slots: { type: [DateSchema], required: true, default: generateDateArray() },
   }, { timestamps: true });
   
-  function generateAvailabilityArray(numDays) {
+  function generateDateArray() {
     const availabilityArray = [];
-  
+    const numDays = 90;
     for (let i = 0; i < numDays; i++) {
       const currentDate = new Date();
       currentDate.setDate(currentDate.getDate() + i);
   
-      const dateStr = currentDate.toISOString().slice(0, 10);
-      const slots = generateSlotsArray();
+      const date = currentDate.toISOString().slice(0, 10);
+      const timeSlots = generateSlotsArray();
   
-      availabilityArray.push({ date: dateStr, slots: slots });
+      availabilityArray.push({ date: date, timeSlots: timeSlots });
     }
   
     return availabilityArray;
   }
   
   function generateSlotsArray() {
-    const slots = [];
+    const timeSlots = [];
   
     for (let i = 9; i < 18; i++) {
-      const timeSlot = `${i}-${i+1}`;
-      slots.push({ time: timeSlot, available: true });
+      const from = `${i}:00`;
+      const to = `${i+1}:00`;
+      timeSlots.push({ from: from, to: to, isAvailable: true });
     }
   
-    return slots;
+    return timeSlots;
   }
 module.exports = mongoose.model("Car", CarSchema);
