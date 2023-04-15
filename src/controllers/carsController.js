@@ -1,16 +1,4 @@
-// const Car = require("../models/carModel");
-const Bookings = require("../models/bookingModel");
-// const User = require("../models/userModel");
 const CarsService = require("../services/carServices");
-// const userModel = require("../models/userModel");
-// const carModel = require("../models/carModel");
-
-const mockcar = {
-  model: "Toyota",
-  year: "2019",
-  color: "Red",
-  description: "This is a car",
-};
 
 class CarsController {
   service = new CarsService();

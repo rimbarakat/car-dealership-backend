@@ -1,7 +1,5 @@
 const Car = require("../models/carModel");
-const Booking = require("../models/bookingModel");
-const HttpError = require("../http-errors/HttpError");
-const { ObjectId } = require("mongodb");
+
 const { HttpNotFoundError } = require("../http-errors/HttpErrors");
 
 class CarService {
@@ -22,17 +20,9 @@ class CarService {
 
   getCarBookingSlots = async (id, date) => {
     let bookingSlots 
+    console.log(date);
     if (date) {
-     /* bookingSlots = await Car.find({ _id: id, 
-        slots: {
-          $elemMatch: {
-            date: date
-          }
-        }
-      },
-      {"slots.$": 1});*/
-      bookingSlots = await Car.find({ _id: id}).select("slots");
-      bookingSlots = bookingSlots[0].slots.filter((slot) => slot.date === date);
+      bookingSlots = await Car.findOne({ _id: id, 'slots.date': date},{"slots.$": 1});
     } 
     else {
       bookingSlots = await Car.findById(id).select("slots");
@@ -86,17 +76,7 @@ class CarService {
     await Booking.deleteMany({ car: id });
     return deletedCar;
   };
-  // getCarBookings = async (carId) => {
-  //   const temp = new Date();
-  //   const bookings = await Booking.find({car: carId}).select("_id car user date time notes timestamps");
-  //   // const test = await Car.find({ _id: carId });
-  //   // for (let i = 0; i < test[0].availability.length; i++) {
-  //   //   //to get one date you put the index of the date you want in the availability to get all dates you keep it as is.
-  //   //   console.log(test[0].availability[i].toObject().date);
-  //   // }
-  //   return bookings;
-  // };
-  
+
 }
 
 module.exports = CarService;

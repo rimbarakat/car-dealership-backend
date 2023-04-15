@@ -1,5 +1,19 @@
 const mongoose = require("mongoose");
 
+
+const BookingSchema = new mongoose.Schema({
+    userId:{
+        type:mongoose.Schema.Types.ObjectId, 
+        ref:"User", 
+        required: true
+    },
+    date: {type:String, required: true},
+    from:{type:String, required: true}, 
+    to:{type:String, required: true},
+    },
+    {timestamps:true}
+  );
+
 const TimeSchema = new mongoose.Schema({
   from: { type: String, required: true },
   to: { type: String, required: true },
@@ -29,8 +43,8 @@ const CarSchema = new mongoose.Schema({
     color: { type: String, required: true },
     description: { type: String, required: true },
     image: { type: String, required: true },
-    isAvailable: { type: Boolean, required: true, default:true},
     isSold: { type: Boolean, required: true, default:false},
+    bookings: [BookingSchema],
     slots: { type: [DateSchema], required: true, default: generateDateArray() },
   }, { timestamps: true });
   
@@ -43,7 +57,7 @@ const CarSchema = new mongoose.Schema({
   
       const date = currentDate.toISOString().slice(0, 10);
       const timeSlots = generateSlotsArray();
-  
+
       availabilityArray.push({ date: date, timeSlots: timeSlots });
     }
   
