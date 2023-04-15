@@ -11,27 +11,27 @@ class BookingsService {
     return booking;
   };
 
-  getBookings = async () => {
-    let bookings;
-    if (date) {
-        bookings = await Car.find({ date: date });
-    } else {
-        bookings = await Car.find().select("userId date from to");
-    }
-    bookings = await Car.find({}).select("userId date from to");
-    return bookings;
-  };
+  // getBookings = async () => {
+  //   let bookings;
+  //   if (date) {
+  //       bookings = await Car.find({ date: date });
+  //   } else {
+  //       bookings = await Car.find().select("userId date from to");
+  //   }
+  //   return bookings;
+  // };
 
   getCarBookings = async (id, date) => {
     let bookingSlots 
-    console.log(date);
     if (date) {
-      bookingSlots = await Car.find({ _id: id, 'bookings.date': date},{"bookings.$": 1});
+      // bookingSlots = await Car.find({ _id: id, 'bookings.date': date }, "bookings");
+      const bookingSlots = await Car.find({ _id: id, 'bookings.date': date }, "bookings");
+      const filteredBookings = bookingSlots[0].bookings.filter(booking => booking.date === date);
+      return filteredBookings;
     } 
     else {
       bookingSlots = await Car.findById(id).select("bookings");
     }
-  
     return bookingSlots;
   };
   
