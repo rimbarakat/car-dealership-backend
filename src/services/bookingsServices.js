@@ -2,24 +2,38 @@ const Car = require("../models/carModel");
 const { HttpNotFoundError } = require("../http-errors/HttpErrors");
 const { HttpConflictError } = require("../http-errors/HttpErrors");
 
+function formatBookingToString(booking) {
+  const userId = booking.userId;
+  const date = booking.date;
+  const from = booking.from;
+  const to = booking.to;
+
+  return `User ID: ${userId}, Date: ${date}, From: ${from}, To: ${to}`;
+}
+
 class BookingsService {
-  getBookingById = async (id) => {
+  /* getBookingById = async (id) => {
     const booking = await Booking.findOne({ _id: id }).select("userId date from to timestamps");
     if (!booking) {
       throw new HttpNotFoundError("Car Booking not found");
     }
     return booking;
   };
+ */
+  
+ 
 
-  // getBookings = async () => {
-  //   let bookings;
-  //   if (date) {
-  //       bookings = await Car.find({ date: date });
-  //   } else {
-  //       bookings = await Car.find().select("userId date from to");
-  //   }
-  //   return bookings;
-  // };
+  getAllBookings = async () => {
+    const cars = await Car.find().select("bookings");
+    let allBookings = [];
+    cars.forEach(car => {
+      car.bookings.forEach(booking => {
+        allBookings.push({ carId: car._id, booking});
+      });
+    });
+    return allBookings;
+  };
+
 
   getCarBookings = async (id, date) => {
     let bookingSlots 
@@ -58,15 +72,54 @@ class BookingsService {
     return updatedCarBookings;
   };
 
-  // deleteBooking = async (id) => {
-  //   const deletedBooking = await Car.deleteOne({
-  //     _id: id,
-  //   });
-  //   if (!deletedBooking) {
-  //     throw new HttpNotFoundError("Car booking not found");
-  //   }
-  //   return deletedBooking;
-  // };
+  deleteBooking = async (carId, bookingId)=>{
+    try {
+      // Find the car by carId
+      const car = await Car.findById(carId);
+  
+      if (!car) {
+        throw new Error("Car not found");
+      }
+
+      let temp = 0;
+      // Find the index of the booking to delete
+      const bookingIndex = car.bookings
+      for (let i = 0; i < bookingIndex.length; i++) {
+        if (bookingIndex[i]._id.toString() === bookingId) {
+          temp = i;
+          break;
+        }
+      }
+      const date = car.bookings[temp].date;
+      const from = car.bookings[temp].from;
+      const to = car.bookings[temp].to;
+      const slots = car.slots.filter(slot => slot.date === date);
+
+      await Car.findOneAndUpdate(
+        { _id: carId, "slots.date": date, "slots.timeSlots.from": from },
+        { $set: { "slots.$[slot].timeSlots.$[timeSlot].isAvailable": true } },
+        { arrayFilters: [{ "slot.date": date }, { "timeSlot.from": from }], new: true }
+      );
+          
+
+
+      if (bookingIndex === -1) {
+        throw new Error("Booking not found");
+      }
+  
+      // Remove the booking from the car's bookings array
+      car.bookings.splice(temp, 1);
+      // Save the car with the updated bookings array
+      await car.updateOne({ bookings: car.bookings });
+  
+      return { message: "Booking successfully deleted" };
+    } catch (error) {
+      throw error;
+    }
+  }
+  
+  
+
 }
 
 module.exports = BookingsService;

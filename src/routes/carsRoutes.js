@@ -15,9 +15,10 @@ router.get("/:id/slots", carsController.getCarBookingSlots); //for frontend cale
 
 /* booking routes */
 
-// router.get("/bookings", bookingsController.getBookings);
 router.get("/:id/bookings", bookingsController.getCarBookings);
 router.post("/:id/bookings", bookingsController.addBooking);
-// router.delete("/:id/bookings", bookingsController.deleteBooking);
+router.delete("/:id/bookings",bookingsController.deleteBooking);
+//router.get("/bookings",checkIsAdmin, bookingsController.getAllBookings);
+
 
 module.exports = router;

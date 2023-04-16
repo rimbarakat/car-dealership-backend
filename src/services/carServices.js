@@ -20,7 +20,6 @@ class CarService {
 
   getCarBookingSlots = async (id, date) => {
     let bookingSlots 
-    console.log(date);
     if (date) {
       bookingSlots = await Car.findOne({ _id: id, 'slots.date': date},{"slots.$": 1});
     } 
