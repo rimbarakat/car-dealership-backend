@@ -21,7 +21,9 @@ class CarService {
   getCarBookingSlots = async (id, date) => {
     let bookingSlots 
     if (date) {
-      bookingSlots = await Car.findOne({ _id: id, 'slots.date': date},{"slots.$": 1});
+      //select slots from the car with the given id and date
+      bookingSlots = await Car.findOne({ _id: id }, { slots: { $elemMatch: { date: date } } });
+      bookingSlots = bookingSlots.slots[0].timeSlots;
     } 
     else {
       bookingSlots = await Car.findById(id).select("slots");
