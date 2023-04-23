@@ -20,24 +20,16 @@ function getUserIdFromToken(token) {
 class BookingsController {
   service = new BookingsService();
 
-  // getBookings = async (req, res, next) => {
+
+  // TODO HEKMAT (fix it 3a zaw2ak)
+  // getAllBookings = async (req, res, next) => {
   //   try {
-  //     const { date } = req.query;
-  //     const bookings = await this.service.getBookings();
-  //     res.status(200).json(bookings);
+  //     const bookings = await this.service.getAllBookings();
+  //     ......
   //   } catch (err) {
   //     next(err);
   //   }
   // };
-
-  getAllBookings = async (req, res, next) => {
-    try {
-      const bookings = await bookingsService.getAllBookings();
-      res.status(200).json(bookings);
-    } catch (error) {
-      next(error);
-    }
-  };
 
   getCarBookings = async (req, res, next) => {
     try {

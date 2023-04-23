@@ -12,27 +12,18 @@ function formatBookingToString(booking) {
 }
 
 class BookingsService {
-  /* getBookingById = async (id) => {
-    const booking = await Booking.findOne({ _id: id }).select("userId date from to timestamps");
-    if (!booking) {
-      throw new HttpNotFoundError("Car Booking not found");
-    }
-    return booking;
-  };
- */
-  
- 
 
-  getAllBookings = async () => {
-    const cars = await Car.find().select("bookings");
-    let allBookings = [];
-    cars.forEach(car => {
-      car.bookings.forEach(booking => {
-        allBookings.push({ carId: car._id, booking});
-      });
-    });
-    return allBookings;
-  };
+  // TODO HEKMAT (fix it 3a zaw2ak)
+  // getAllBookings = async () => {
+  //   const cars = await Car.find().select("bookings");
+  //   let allBookings = [];
+  //   cars.forEach(car => {
+  //     car.bookings.forEach(booking => {
+  //       allBookings.push({ carId: car._id, booking});
+  //     });
+  //   });
+  //   return allBookings;
+  // };
 
 
   getCarBookings = async (id, date) => {
