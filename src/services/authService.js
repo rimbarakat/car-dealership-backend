@@ -19,10 +19,6 @@ class AuthService {
       password: hashedPassword
     });
     const savedUser = await newUser.save();
-    // Sending an access token here directly is wrong, because you have to verify the email first
-    // we should only send an access token after login, not register
-    // But... for now, okay..
-    // we will assume that the email is automatically verified and that the user is automatically signed in
     const accessToken = await jwt.sign({
       userId: savedUser._id,
       userType: savedUser.userType,
