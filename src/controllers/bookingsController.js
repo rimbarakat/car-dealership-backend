@@ -21,15 +21,14 @@ class BookingsController {
   service = new BookingsService();
 
 
-  // TODO HEKMAT (fix it 3a zaw2ak)
-  // getAllBookings = async (req, res, next) => {
-  //   try {
-  //     const bookings = await this.service.getAllBookings();
-  //     ......
-  //   } catch (err) {
-  //     next(err);
-  //   }
-  // };
+  getAllBookings = async (req, res, next) => {
+    try {
+      const allBookings = await this.service.getAllBookings();
+      res.json(allBookings);
+    } catch (err) {
+      next(err);
+    }
+  };
 
   getCarBookings = async (req, res, next) => {
     try {

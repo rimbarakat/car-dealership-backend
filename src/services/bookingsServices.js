@@ -13,17 +13,16 @@ function formatBookingToString(booking) {
 
 class BookingsService {
 
-  // TODO HEKMAT (fix it 3a zaw2ak)
-  // getAllBookings = async () => {
-  //   const cars = await Car.find().select("bookings");
-  //   let allBookings = [];
-  //   cars.forEach(car => {
-  //     car.bookings.forEach(booking => {
-  //       allBookings.push({ carId: car._id, booking});
-  //     });
-  //   });
-  //   return allBookings;
-  // };
+  getAllBookings = async () => {
+    const cars = await Car.find().select("bookings");
+    let allBookings = [];
+    cars.forEach(car => {
+      car.bookings.forEach(booking => {
+        allBookings.push({ carId: car._id, booking });
+      });
+    });
+    return allBookings;
+  };
 
 
   getCarBookings = async (id, date) => {
