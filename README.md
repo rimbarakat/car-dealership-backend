@@ -1,8 +1,7 @@
 # car-dealership-backend
 
-## Signup and Login:
 ### Prerequisites:
-Install all the necessary packages in the package-json file.   
+Install all the necessary packages in the package-json file. (run npm install)
 MongoDB connection.   
 For the timebeing you need to have postman.   
 
