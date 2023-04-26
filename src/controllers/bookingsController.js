@@ -5,7 +5,6 @@ const jwt = require("../utils/jwt");
 //const validateEnv = require("src/utils/validateEnv");
 //validateEnv();
 
-
 function getUserIdFromToken(token) {
   return new Promise((resolve, reject) => {
     try {
@@ -21,10 +20,8 @@ function getUserIdFromToken(token) {
   });
 }
 
-
 class BookingsController {
   service = new BookingsService();
-
 
   getAllBookings = async (req, res, next) => {
     try {
@@ -41,8 +38,7 @@ class BookingsController {
       const { date } = req.query;
       const bookings = await this.service.getCarBookings(id, date);
       res.json(bookings);
-    }
-      catch (err) {
+    } catch (err) {
       next(err);
     }
   };
@@ -51,7 +47,7 @@ class BookingsController {
     try {
       const { date, from, to } = req.body;
       const token = req.headers.authorization;
-      const userIdPromise = getUserIdFromToken(token.split(' ')[1]);
+      const userIdPromise = getUserIdFromToken(token.split(" ")[1]);
       const userId = await userIdPromise;
       console.log(userId);
       const { id } = req.params;
@@ -66,20 +62,22 @@ class BookingsController {
       next(err);
     }
   };
-  
-  
+
   deleteBooking = async (req, res, next) => {
     try {
       const id = req.params.id;
-      const bookingid = req.body.id;
-      console.log(id,bookingid);
-      await this.service.deleteBooking(id,bookingid);
-      res.sendStatus(204).json({ message: "Booking deleted" });
+      const bookingid = req.params.bid;
+      console.log("test");
+      console.log(id, bookingid);
+      const test = await this.service.deleteBooking(id, bookingid);
+      //res.sendStatus(204).json({ message: "Booking deleted" });
+      console.log("Done");
+      res.status(204).send();
+      return;
     } catch (err) {
       next(err);
     }
   };
 }
-
 
 module.exports = new BookingsController();
