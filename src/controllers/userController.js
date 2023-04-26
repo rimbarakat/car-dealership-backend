@@ -2,9 +2,8 @@ const UserService = require("../services/userService");
 
 class userController {
   userService = new UserService();
-  
+
   getUserInfo = async (req, res, next) => {
-    service = new AuthService();
     const { userId } = req.params;
     try {
       const user = await this.userService.getUserInfo(userId);
@@ -18,7 +17,7 @@ class userController {
     const { userId } = req.params;
     const updateBody = req.body;
     try {
-      const user = await userService.updateUserInfo(userId, updateBody);
+      const user = await this.userService.updateUserInfo(userId, updateBody);
       res.status(200).json(user);
     } catch (e) {
       next(e);
