@@ -7,15 +7,20 @@ const jwt = require("../utils/jwt");
 
 
 function getUserIdFromToken(token) {
-  try {
-    const decoded = jwt.verifyToken(token);
-    const userId = decoded._id;
-
-    return userId;
-  } catch (error) {
-    throw error;
-  }
+  return new Promise((resolve, reject) => {
+    try {
+      const decodedPromise = jwt.verifyToken(token);
+      decodedPromise.then((decoded) => {
+        const userId = decoded.id;
+        console.log(userId);
+        resolve(userId);
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
 }
+
 
 class BookingsController {
   service = new BookingsService();
@@ -46,9 +51,11 @@ class BookingsController {
     try {
       const { date, from, to } = req.body;
       const token = req.headers.authorization;
-      const userId=getUserIdFromToken(token.split(" ")[1]);
+      const userIdPromise = getUserIdFromToken(token.split(' ')[1]);
+      const userId = await userIdPromise;
+      console.log(userId);
       const { id } = req.params;
-      const booking = await this.service.addBooking(id,{
+      const booking = await this.service.addBooking(id, {
         userId,
         date,
         from,
@@ -59,6 +66,7 @@ class BookingsController {
       next(err);
     }
   };
+  
   
   deleteBooking = async (req, res, next) => {
     try {

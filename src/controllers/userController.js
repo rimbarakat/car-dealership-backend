@@ -23,6 +23,16 @@ class userController {
       next(e);
     }
   };
+
+  // getUserBookings = async (req, res, next) => {
+  //   const { userId } = req.params;
+  //   try {
+  //     const user = await this.userService.getUserBookings(userId);
+  //     res.status(200).json(user);
+  //   } catch (e) {
+  //     next(e);
+  //   }
+  // };
 }
 
 module.exports = new userController();
