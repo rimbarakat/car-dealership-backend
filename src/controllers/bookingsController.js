@@ -67,11 +67,7 @@ class BookingsController {
     try {
       const id = req.params.id;
       const bookingid = req.params.bid;
-      console.log("test");
-      console.log(id, bookingid);
       const test = await this.service.deleteBooking(id, bookingid);
-      //res.sendStatus(204).json({ message: "Booking deleted" });
-      console.log("Done");
       res.status(204).send();
       return;
     } catch (err) {

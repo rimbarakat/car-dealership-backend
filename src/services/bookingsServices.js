@@ -114,7 +114,6 @@ class BookingsService {
       car.bookings.splice(temp, 1);
       // Save the car with the updated bookings array
       const test = await car.updateOne({ bookings: car.bookings });
-      console.log("Done");
       return;
     } catch (error) {
       throw error;
