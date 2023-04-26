@@ -1,12 +1,13 @@
 const UserService = require("../services/userService");
-const userService = new UserService();
 
 class userController {
-
+  userService = new UserService();
+  
   getUserInfo = async (req, res, next) => {
+    service = new AuthService();
     const { userId } = req.params;
     try {
-      const user = await userService.getUserInfo(userId);
+      const user = await this.userService.getUserInfo(userId);
       res.status(200).json(user);
     } catch (e) {
       next(e);

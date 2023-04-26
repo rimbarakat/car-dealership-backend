@@ -1,8 +1,8 @@
 const User = require("../models/userModel");
 const jwt = require("../utils/jwt");
 const { hashPassword, verify } = require("../utils/hash");
-const HttpUnauthorizedError = require("../http-errors/HttpErrors");
-const HttpError = require("../http-errors/HttpError");
+const {HttpError} = require("../http-errors/HttpError");
+const {HttpUnauthorizedError} = require("../http-errors/HttpErrors");
 
 class AuthService {
   registerUser = async (registerBody) => {
