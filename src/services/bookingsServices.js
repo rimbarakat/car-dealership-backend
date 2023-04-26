@@ -1,4 +1,5 @@
 const Car = require("../models/carModel");
+const UserModel = require("../models/userModel");
 const { HttpNotFoundError } = require("../http-errors/HttpErrors");
 const { HttpConflictError } = require("../http-errors/HttpErrors");
 
@@ -12,16 +13,96 @@ function formatBookingToString(booking) {
 }
 
 class BookingsService {
-  getAllBookings = async () => {
-    const cars = await Car.find().select("bookings");
-    let allBookings = [];
-    cars.forEach((car) => {
-      car.bookings.forEach((booking) => {
-        allBookings.push({ carId: car._id, booking });
-      });
-    });
-    return allBookings;
+  
+  getAllBookings = async (userId, date) => {
+
+    // if user is admin
+    const user = await UserModel.findById(userId);
+    if (user.userType == "admin") {
+      const cars = await Car.find({});
+      if (date) {
+        const filteredBookings = [];
+        for (const car of cars) {
+          for (const booking of car.bookings) {
+            console.log(booking.date);
+            if (booking.date == date) {
+              filteredBookings.push({
+                carId: car._id,
+                userId: booking.userId,
+                bookingId: booking._id,
+                bookingDate: booking.date,
+                bookingFrom: booking.from,
+                bookingTo: booking.to,
+              });
+            }
+          }
+        } 
+        return filteredBookings;
+      }
+      else {
+        return cars.flatMap(car => car.bookings.map(booking => ({
+          carId: car._id,
+          userId: booking.userId,
+          bookingId: booking._id,
+          bookingDate: booking.date,
+          bookingFrom: booking.from,
+          bookingTo: booking.to,
+        })));
+      }
+    }
+
+    // if user is client
+    else
+    {
+      if (date) {
+        const cars = await Car.find({ bookings: { $elemMatch: { userId: userId, date: date } } });
+        const bookings = [];
+  
+        for (const car of cars) {
+          for (const booking of car.bookings) {
+            if (typeof booking.userId === 'object') { // to remove when all userId are defined and database is cleaned
+              if (booking.userId.toString() === userId && booking.date === date) {
+                bookings.push({
+                  carId: car._id,
+                  // userId: booking.userId,
+                  bookingId: booking._id,
+                  // bookingDate: booking.date,
+                  bookingFrom: booking.from,
+                  bookingTo: booking.to,
+                });
+              }
+            }
+          }
+        }
+        return bookings;
+
+      }
+      else {
+        const cars = await Car.find({ bookings: { $elemMatch: { userId: userId } } });
+        const bookings = [];
+  
+        for (const car of cars) {
+          for (const booking of car.bookings) {
+            if (typeof booking.userId === 'object') { // to remove when all userId are defined and database is cleaned
+              if (booking.userId.toString() === userId) {
+                bookings.push({
+                  carId: car._id,
+                  // userId: booking.userId,
+                  bookingId: booking._id,
+                  bookingDate: booking.date,
+                  bookingFrom: booking.from,
+                  bookingTo: booking.to,
+                });
+              }
+            }
+          }
+        }
+        return bookings;
+      }
+    }
+    
   };
+
 
   getCarBookings = async (id, date) => {
     let bookingSlots;

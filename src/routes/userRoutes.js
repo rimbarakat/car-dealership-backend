@@ -8,6 +8,5 @@ const router = express.Router();
 
 router.get("/users/:userId", userController.getUserInfo);
 router.put("/users/:userId", userController.updateUserInfo);
-// router.get("/users/bookings", userController.getUserBookings);
 
 module.exports = router;

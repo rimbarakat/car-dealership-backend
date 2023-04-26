@@ -20,15 +20,6 @@ class UserService {
     return user;
   };
 
-  // getUserBookings = async (userId) => {
-  //   const user = await UserModel.findById(userId);
-  //   const bookings = await CarModel.findById(userId);
-  //   if (!user) {
-  //     throw new Error("User not found");
-  //   }
-  //   return user;
-  // };
-
 }
 
 module.exports = UserService;

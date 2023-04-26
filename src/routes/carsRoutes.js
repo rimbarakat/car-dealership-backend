@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.get("/", authMiddleware, carsController.getCars);
 router.post("/", authMiddleware, checkIsAdmin, carsController.addCar);
-router.get("/:id", authMiddleware, carsController.getCar);
+// router.get("/:id", authMiddleware, carsController.getCar);
 router.delete("/:id", authMiddleware, checkIsAdmin, carsController.deleteCar);
 router.put("/:id", authMiddleware, checkIsAdmin, carsController.updateCar);
 router.get("/:id/slots", carsController.getCarBookingSlots); //for frontend calendar query
@@ -18,7 +18,6 @@ router.get("/:id/slots", carsController.getCarBookingSlots); //for frontend cale
 router.get("/:id/bookings", bookingsController.getCarBookings);
 router.post("/:id/bookings", bookingsController.addBooking);
 router.delete("/:id/bookings/:bid", bookingsController.deleteBooking);
-//router.get("/bookings",checkIsAdmin, bookingsController.getAllBookings);
 router.get("/bookings", bookingsController.getAllBookings);
 
 module.exports = router;

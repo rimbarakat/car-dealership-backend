@@ -11,7 +11,6 @@ function getUserIdFromToken(token) {
       const decodedPromise = jwt.verifyToken(token);
       decodedPromise.then((decoded) => {
         const userId = decoded.id;
-        console.log(userId);
         resolve(userId);
       });
     } catch (error) {
@@ -25,8 +24,12 @@ class BookingsController {
 
   getAllBookings = async (req, res, next) => {
     try {
-      const allBookings = await this.service.getAllBookings();
-      res.json(allBookings);
+      const token = req.headers.authorization;
+      const userIdPromise = getUserIdFromToken(token.split(" ")[1]);
+      const userId = await userIdPromise;
+      const { date } = req.query;
+      const bookings = await this.service.getAllBookings(userId, date);
+      res.json(bookings);
     } catch (err) {
       next(err);
     }
@@ -47,7 +50,7 @@ class BookingsController {
     try {
       const { date, from, to } = req.body;
       const token = req.headers.authorization;
-      const userIdPromise = getUserIdFromToken(token.split(" ")[1]);
+      const userIdPromise = await getUserIdFromToken(token.split(" ")[1]);
       const userId = await userIdPromise;
       console.log(userId);
       const { id } = req.params;
