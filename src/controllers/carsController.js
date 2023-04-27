@@ -2,15 +2,15 @@ const CarsService = require("../services/carServices");
 
 class CarsController {
   service = new CarsService();
-  // getCar = async (req, res, next) => {
-  //   try {
-  //     const id = req.params.id;
-  //     const car = await this.service.getCarbyId(id);
-  //     res.json(car);
-  //   } catch (err) {
-  //     next(err);
-  //   }
-  // };
+  getCar = async (req, res, next) => {
+    try {
+      const id = req.params.id;
+      const car = await this.service.getCarbyId(id);
+      res.json(car);
+    } catch (err) {
+      next(err);
+    }
+  };
   getCars = async (req, res, next) => {
     try {
       const cars = await this.service.getAllCars();
