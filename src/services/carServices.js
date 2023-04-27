@@ -5,13 +5,13 @@ const { HttpNotFoundError } = require("../http-errors/HttpErrors");
 class CarService {
   getCarbyId = async (id) => {
     //retreive car info by the id from the database and return it
-    const car = await Car.findOne({ _id: id }).select(
-      "model mileage price price_int engine engineShort fuelType fuelTypeShort gearBox gearBoxShort drive driveShort year color description image isAvailable isSold _id"
-    );
-    if (!car) {
-      throw new HttpNotFoundError("Car not found");
-    }
-    return car;
+      const car = await Car.findOne({ _id: id }).select(
+        "model mileage price price_int engine engineShort fuelType fuelTypeShort gearBox gearBoxShort drive driveShort year color description image isAvailable isSold _id"
+      );
+      if (!car) {
+        throw new HttpNotFoundError("Car not found");
+      }
+      return car;
   };
   getAllCars = async () => {
     const cars = await Car.find().select("model mileage price price_int engine engineShort fuelType fuelTypeShort gearBox gearBoxShort drive driveShort year color description image isAvailable isSold");

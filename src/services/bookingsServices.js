@@ -13,9 +13,7 @@ function formatBookingToString(booking) {
 }
 
 class BookingsService {
-  
   getAllBookings = async (userId, date) => {
-
     // if user is admin
     const user = await UserModel.findById(userId);
     if (user.userType == "admin") {
@@ -24,13 +22,14 @@ class BookingsService {
         const filteredBookings = [];
         for (const car of cars) {
           for (const booking of car.bookings) {
-            console.log(booking.date);
             if (booking.date == date) {
+              const booker = await UserModel.findById(booking.userId)
               filteredBookings.push({
                 carId: car._id,
                 userId: booking.userId,
+                userFullName: booker.fullName,
                 bookingId: booking._id,
-                bookingDate: booking.date,
+                // bookingDate: booking.date,
                 bookingFrom: booking.from,
                 bookingTo: booking.to,
               });
@@ -40,14 +39,22 @@ class BookingsService {
         return filteredBookings;
       }
       else {
-        return cars.flatMap(car => car.bookings.map(booking => ({
-          carId: car._id,
-          userId: booking.userId,
-          bookingId: booking._id,
-          bookingDate: booking.date,
-          bookingFrom: booking.from,
-          bookingTo: booking.to,
-        })));
+        const filteredBookings = [];
+        for (const car of cars) {
+          for (const booking of car.bookings) {
+            const booker = await UserModel.findById(booking.userId)
+            filteredBookings.push({
+              carId: car._id,
+              userId: booking.userId,
+              userFullName: booker.fullName,
+              bookingId: booking._id,
+              bookingDate: booking.date,
+              bookingFrom: booking.from,
+              bookingTo: booking.to,
+            });
+          }
+        } 
+        return filteredBookings;
       }
     }
 
