@@ -67,6 +67,7 @@ class CarService {
     const newCar = await newCarInfo.save();
     return newCar.toObject();
   };
+
   deleteCar = async (id) => {
     const deletedCar = await Car.deleteOne({
       _id: id,
@@ -74,7 +75,6 @@ class CarService {
     if (!deletedCar) {
       throw new HttpNotFoundError("Car not found");
     }
-    await Booking.deleteMany({ car: id });
     return deletedCar;
   };
 
