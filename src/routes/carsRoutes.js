@@ -13,11 +13,5 @@ router.delete("/:id", authMiddleware, checkIsAdmin, carsController.deleteCar);
 router.put("/:id", authMiddleware, checkIsAdmin, carsController.updateCar);
 router.get("/:id/slots", carsController.getCarBookingSlots); //for frontend calendar query
 
-/* booking routes */
-
-router.get("/:id/bookings", bookingsController.getCarBookings);
-router.post("/:id/bookings", bookingsController.addBooking);
-router.delete("/:id/bookings/:bid", bookingsController.deleteBooking);
-router.get("/bookings", bookingsController.getAllBookings);
 
 module.exports = router;

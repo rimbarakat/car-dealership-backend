@@ -43,6 +43,7 @@ class BookingsService {
         for (const car of cars) {
           for (const booking of car.bookings) {
             const booker = await UserModel.findById(booking.userId)
+            console.log(booker)
             filteredBookings.push({
               carId: car._id,
               userId: booking.userId,
@@ -184,7 +185,6 @@ class BookingsService {
       const from = car.bookings[temp].from;
       const to = car.bookings[temp].to;
       const slots = car.slots.filter((slot) => slot.date === date);
-
       await Car.findOneAndUpdate(
         { _id: carId, "slots.date": date, "slots.timeSlots.from": from },
         { $set: { "slots.$[slot].timeSlots.$[timeSlot].isAvailable": true } },
