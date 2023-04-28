@@ -123,39 +123,11 @@ class BookingsService {
       const filteredBookings = bookingSlots[0].bookings.filter(
         (booking) => booking.date === date
       );
-      const bookings = [];
-        for (const booking of filteredBookings) {
-          const booker = await UserModel.findById(booking.userId);
-          bookings.push({
-            carId: id,
-            userId: booking.userId,
-            userFullName: booker.fullName,
-            bookingId: booking._id,
-            bookingFrom: booking.from,
-            bookingTo: booking.to,
-          });
-        }
-    return bookings;
-      // return filteredBookings;
+      return filteredBookings;
     } else {
-      const bookingSlots = await Car.findById(id).select("bookings");
-      const bookings = [];
-    
-      await Promise.all(bookingSlots.bookings.map(async (booking) => {
-        const booker = await UserModel.findById(booking.userId);
-        bookings.push({
-          carId: id,
-          userId: booking.userId,
-          userFullName: booker.fullName,
-          bookingId: booking._id,
-          bookingFrom: booking.from,
-          bookingTo: booking.to,
-        });
-      }));
-      return bookings;
+      bookingSlots = await Car.findById(id).select("bookings");
     }
-    
-    // return bookingSlots;
+    return bookingSlots;
   };
 
   addBooking = async (id, bookingInfo) => {
