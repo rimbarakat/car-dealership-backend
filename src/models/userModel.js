@@ -14,6 +14,10 @@ const userSchema = new Schema(
       trim: true,
       match: /^\S+@\S+\.\S+$/,
     },
+    address: {
+      type: String,
+      required: true,
+    },
     password: {
       type: String,
       required: true,
