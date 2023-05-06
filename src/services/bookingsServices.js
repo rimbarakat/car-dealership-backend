@@ -98,6 +98,7 @@ class BookingsService {
               if (booking.userId.toString() === userId) {
                 bookings.push({
                   carId: car._id,
+                  carModel: car.model,
                   // userId: booking.userId,
                   bookingId: booking._id,
                   bookingDate: booking.date,
