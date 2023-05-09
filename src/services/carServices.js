@@ -78,6 +78,25 @@ class CarService {
     return deletedCar;
   };
 
+  getTotalCarsSold = async () => {
+    let carsSold = await Car.find({ isSold: true }).countDocuments();
+    return carsSold;
+  };
+
+  getTotalCars = async () => {
+    let carsSold = await Car.find().countDocuments();
+    return carsSold;
+  };
+
+  getRevenue = async (date) => {
+    let revenue = await Car.aggregate([
+        { $match: { isSold: true } },
+        { $group: { _id: null, total: { $sum: "$price_int" } } }
+      ]);
+    return revenue;
+  };
+
+
 }
 
 module.exports = CarService;

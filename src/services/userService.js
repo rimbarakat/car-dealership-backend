@@ -20,6 +20,11 @@ class UserService {
     return user;
   };
 
+  getTotalUsers = async () => {
+    const user = await UserModel.find().countDocuments();
+    return user;
+  }
+
 }
 
 module.exports = UserService;

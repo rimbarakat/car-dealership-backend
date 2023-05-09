@@ -9,6 +9,7 @@ const authRoutes = require("./routes/authRoutes");
 const carsRoutes = require("./routes/carsRoutes");
 const userRoutes = require("./routes/userRoutes");
 const bookingsRoutes = require("./routes/bookingsRoutes");
+const statisticsRoutes = require("./routes/statisticsRoutes");
 const errorHandlerMiddleware = require("./middlewares/errorHandlerMiddleware");
 
 const uri = process.env.MONGO_URI;
@@ -30,6 +31,7 @@ app.use("/auth", authRoutes);
 app.use("/cars", carsRoutes);
 app.use("/", userRoutes);
 app.use("/bookings", bookingsRoutes);
+app.use("/statistics", statisticsRoutes);
 
 app.use(errorHandlerMiddleware);
 const port = Number(process.env.PORT) || 8000;

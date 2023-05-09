@@ -6,7 +6,8 @@ const {HttpUnauthorizedError} = require("../http-errors/HttpErrors");
 
 class AuthService {
   registerUser = async (registerBody) => {
-    const { fullName, email, password } = registerBody;
+    console.log(registerBody);
+    const { fullName, email, password, address } = registerBody;
     const userExists = await User.findOne({ email });
     if (userExists) {
       throw new HttpError(409, "Email already registered");
@@ -15,6 +16,7 @@ class AuthService {
     const newUser = new User({
       fullName,
       email,
+      address,
       userType: "client",
       password: hashedPassword
     });

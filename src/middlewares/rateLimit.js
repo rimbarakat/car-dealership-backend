@@ -1,5 +1,7 @@
 const express = require("express");
-const rateLimit = require("express-rate-limit");
+// const rateLimit = require("express-rate-limit");
+const rateLimit = require("../middlewares/rateLimit");
+
 
 const app = express();
 const HttpError = require("../http-errors/HttpError");
