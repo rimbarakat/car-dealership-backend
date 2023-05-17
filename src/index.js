@@ -29,7 +29,7 @@ app.use(express.json());
 app.use(cors());
 app.use("/auth", authRoutes);
 app.use("/cars", carsRoutes);
-app.use("/", userRoutes);
+app.use("/users", userRoutes);
 app.use("/bookings", bookingsRoutes);
 app.use("/statistics", statisticsRoutes);
 

@@ -11,20 +11,21 @@ class UserService {
   };
 
   updateUserInfo = async (userId, updateBody) => {
-    const user = await UserModel.findById(userId);
-    if (!user) {
-      throw new Error("User not found");
-    }
-    Object.assign(user, updateBody);
-    await user.save();
-    return user;
+    await UserModel.updateOne(
+      {
+        _id: userId,
+      },
+      {
+        fullName: updateBody.name,
+        address: updateBody.address,
+      }
+    );
   };
 
   getTotalUsers = async () => {
     const user = await UserModel.find().countDocuments();
     return user;
-  }
-
+  };
 }
 
 module.exports = UserService;

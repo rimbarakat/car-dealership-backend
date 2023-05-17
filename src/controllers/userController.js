@@ -17,13 +17,12 @@ class userController {
     const { userId } = req.params;
     const updateBody = req.body;
     try {
-      const user = await this.userService.updateUserInfo(userId, updateBody);
-      res.status(200).json(user);
+      await this.userService.updateUserInfo(userId, updateBody);
+      res.status(204).send();
     } catch (e) {
       next(e);
     }
   };
-
 }
 
 module.exports = new userController();

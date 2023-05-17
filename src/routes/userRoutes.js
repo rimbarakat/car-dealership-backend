@@ -5,8 +5,7 @@ const authMiddleware = require("../middlewares/authMiddleware");
 const checkIsAdmin = require("../middlewares/checkIsAdmin");
 const router = express.Router();
 
-
-router.get("/users/:userId", userController.getUserInfo);
-router.put("/users/:userId", userController.updateUserInfo);
+router.get("/:userId", userController.getUserInfo);
+router.put("/:userId", userController.updateUserInfo);
 
 module.exports = router;
